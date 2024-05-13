@@ -9,17 +9,18 @@ class Color():
     COLOR_TYPE = list[int, int, int, int]
 
     @staticmethod
-    def newColor(red : int, green : int, blue : int, alpha : int):
-        #snaps channel values to acceptable values. snaps to range 0-255, and ensures that its an integer.
-        red = int(max(min(red, 255), 0))
-        green = int(max(min(green, 255), 0))
-        blue = int(max(min(blue, 255), 0))
-        alpha = int(max(min(alpha, 255), 0))
-
-        return [red, green, blue, alpha]
+    def validateColor(color : COLOR_TYPE):
+        return [int(max(0, min(i, 255))) for i in color]
 
     @staticmethod
-    def interpolate(color1 : list[int, int, int, int], color2 : list[int, int, int, int], t : float = 0.5):
+    def newColor(red : int, green : int, blue : int, alpha : int):
+        returnColor = [red, green, blue, alpha]
+        returnColor = Color.validateColor(returnColor)
+
+        return returnColor
+
+    @staticmethod
+    def interpolate(color1 : COLOR_TYPE, color2 : COLOR_TYPE, t : float = 0.5):
         t = float(max(min(t, 1), 0))
 
         red = int(color1[0] + (t * (color2[0] - color1[0])))
@@ -27,10 +28,10 @@ class Color():
         blue = int(color1[0] + (t * (color2[0] - color1[0])))
         alpha = int(color1[0] + (t * (color2[0] - color1[0])))
 
-        return [red, green, blue, alpha]
+        return Color.validateColor([red, green, blue, alpha])
 
     @staticmethod
-    def getChannel(color : list[int, int, int, int], channel : str | int):
+    def getChannel(color : COLOR_TYPE, channel : str | int):
         if type(channel) is str:
             channel = channel.lower()
 
@@ -39,6 +40,20 @@ class Color():
 
         else:
             return color[channel]
+
+    @staticmethod
+    def modifyChannel(color : COLOR_TYPE, channel : str | int, value : int):
+        if type(channel) is str:
+            channel = channel.lower()
+            returnColor = color.copy()
+
+            if channel in 'rgba':
+                returnColor[{'r':0, 'g':1, 'b':2, 'a':3}[channel]] = value
+
+        else:
+            returnColor[channel] = value
+
+        return Color.validateColor(returnColor)
 
 class Node():
     def __init__(self, position : list[float, float]) -> None:
