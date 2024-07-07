@@ -20,10 +20,13 @@ while running:
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_m:
-                defaultCube.curves[0].paths[0].addHandle(Handle(pygame.mouse.get_pos()))
+                defaultCube.curves[0].paths[-1].addHandle(Handle(pygame.mouse.get_pos()))
+
+            elif event.key == pygame.K_n:
+                defaultCube.curves[0].paths.append(Path(Node((pygame.mouse.get_pos())), Node((pygame.mouse.get_pos())), []))
 
         elif event.type == pygame.MOUSEMOTION:
-            defaultCube.curves[0].paths[0].nodeEnd.vector.update(pygame.mouse.get_pos())
+            defaultCube.curves[0].paths[-1].nodeEnd.vector.update(pygame.mouse.get_pos())
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("white")

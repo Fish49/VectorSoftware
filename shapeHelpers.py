@@ -134,6 +134,10 @@ class Shape():
         self.outlineColorRGBA: Color.COLOR_TYPE = outlineColorRGBA
         self.outlineWidthUnits: float = outlineWidthUnits
 
+class Group():
+    def __init__(self, shape: Shape) -> None:
+        self.shapes = [shape]
+
 class Circle(Shape):
     def __init__(self, radius: float, position: list[float, float]) -> None:
         super().__init__()
